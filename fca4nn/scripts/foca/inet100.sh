@@ -1,0 +1,19 @@
+CUDA_VISIBLE_DEVICES=5 python main.py \
+            --do_train \
+            --do_test \
+            --seed 0 \
+            --model resnet50 \
+            --concept_wts 0.01 \
+            --cls_wts 0.01 \
+            --dataset imagenet100 \
+            --data_root /raid/DATASETS/inet100 \
+            --concept_file ./../../data/concepts/inet100_concepts.json \
+            --lattice_path ./../../data/lattices/inet100_lattice.pkl \
+            --num_clfs 3 \
+            --lattice_levels 1 3 5 \
+            --backbone_layer_ids 2 3 4 \
+            --lr 1e-4 \
+            --epochs 150 \
+            --batch_size 256 \
+            --verbose 100 \
+            --clf_special_init
