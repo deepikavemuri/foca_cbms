@@ -174,11 +174,11 @@ def create_new_dataset(
 
 
 def attr_id_to_name():
-    file_path = "/data1/ai22resch11001/projects/data/CUB_200_2011/cub112.json"
+    file_path = "./CUB_200_2011/cub112.json"
 
     attr_id_to_name = {}
     with open(
-        "/data1/ai22resch11001/projects/data/CUB_200_2011/filtered_attributes.txt", "r"
+        "./CUB_200_2011/filtered_attributes.txt", "r"
     ) as f:
         for line in f:
             parts = line.strip().split()
@@ -203,8 +203,8 @@ def attr_id_to_name():
 
 
 def change_class_to_id(
-    class_level_json_path="/data1/ai22resch11001/projects/data/inet100/imagenet100.json",
-    class_level_output_json_path="/data1/ai22resch11001/projects/data/inet100/imagenet100_id2cons.json",
+    class_level_json_path="./data/inet100/imagenet100.json",
+    class_level_output_json_path="./data/inet100/imagenet100_id2cons.json",
 ):
     # class_level_json_path = '/data1/ai22resch11001/projects/data/inet100/imagenet100.json'
     # class_level_output_json_path = '/data1/ai22resch11001/projects/data/inet100/imagenet100_id2cons.json'
@@ -324,7 +324,7 @@ def get_info_from_lattice(lattice_path, lattice_levels, make_exclusive=False):
 
 def split_csv():
     df = pd.read_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_grouped_bin.csv"
+        "./inet100/inet100_formal_concepts_grouped_bin.csv"
     )
 
     # df['id'] = range(1, len(df) + 1)
@@ -337,7 +337,7 @@ def split_csv():
     )
 
     with open(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_fc2class.json", "w"
+        "./data/inet100/inet100_fc2class.json", "w"
     ) as f:
         json.dump(class2ids, f, indent=4)
 
@@ -346,7 +346,7 @@ def split_csv():
 
 def clean_csv():
     df = pd.read_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_full.csv"
+        "./inet100/inet100_formal_concepts_full.csv"
     )
 
     def clean_up(text):
@@ -356,14 +356,14 @@ def clean_csv():
     df["extent"] = df["extent"].apply(clean_up)
 
     df.to_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_full.csv",
+        "./inet100/inet100_formal_concepts_full.csv",
         index=False,
     )
 
 
 def binarize_attributes():
     df = pd.read_csv(
-        "/DATA/ai22resch11001/projects/fca4nn/data/formal_concepts/inet100_annotations_instancelevel_reduced_100classes.csv"
+        "./fca4nn/data/formal_concepts/inet100_annotations_instancelevel_reduced_100classes.csv"
     )
 
     all_attributes = set()
@@ -397,14 +397,14 @@ def binarize_attributes():
     df["intent"] = df["intent"].apply(intent_to_binary_vector)
 
     df.to_csv(
-        "/DATA/ai22resch11001/projects/fca4nn/data/formal_concepts/inet100_formal_concepts_bin.csv",
+        "./fca4nn/data/formal_concepts/inet100_formal_concepts_bin.csv",
         index=False,
     )
 
 
 def group_formalconcepts():
     df = pd.read_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_binclasslevel.csv"
+        "./data/inet100/inet100_formal_concepts_binclasslevel.csv"
     )
     grouped_df = df.groupby(["level", "class"])
     df["fc_id"] = None
@@ -414,13 +414,13 @@ def group_formalconcepts():
         df.loc[group_index, "fc_id"] = idx
 
     df.to_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_groupedclasslevel.csv",
+        "./data/inet100/inet100_formal_concepts_groupedclasslevel.csv",
         index=False,
     )
 
 
 def binarize_class_level_attrs():
-    with open("/DATA/ai22resch11001/projects/data/inet100/imagenet100.json", "r") as f:
+    with open("./data/inet100/imagenet100.json", "r") as f:
         class_attr_mapping = json.load(f)
 
     all_attributes = []
@@ -448,11 +448,11 @@ def create_class_level_annotations():
     class2binconcepts = binarize_class_level_attrs()
     # print(class2binconcepts)
     df = pd.read_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_full.csv"
+        "./data/inet100/inet100_formal_concepts_full.csv"
     )
     df["intent"] = df["class"].apply(lambda x: class2binconcepts[x])
     df.to_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_binclasslevel.csv",
+        "./data/inet100/inet100_formal_concepts_binclasslevel.csv",
         index=False,
     )
 
@@ -460,7 +460,7 @@ def create_class_level_annotations():
 def replace_class_with_id():
     classtoid = dict()
     with open(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_fc2class.json", "r"
+        "./data/inet100/inet100_fc2class.json", "r"
     ) as f:
         class_attr_mapping = json.load(f)
     classes = [item["class"] for item in class_attr_mapping]
@@ -468,11 +468,11 @@ def replace_class_with_id():
         classtoid[class_name] = idx
 
     df = pd.read_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_grouped_bin.csv"
+        "./data/inet100/inet100_formal_concepts_grouped_bin.csv"
     )
     df["class_id"] = df["class"].map(classtoid)
     df.to_csv(
-        "/DATA/ai22resch11001/projects/data/inet100/inet100_formal_concepts_grouped_bin.csv",
+        "./inet100/inet100_formal_concepts_grouped_bin.csv",
         index=False,
     )
 
