@@ -1,4 +1,4 @@
-# Repository for FoCA-CBM
+# Repository for FoCA-CBMs
 
 ### File Structure
 
